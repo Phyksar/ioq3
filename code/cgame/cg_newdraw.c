@@ -56,7 +56,7 @@ void CG_SetPrintString(int type, const char *p) {
 }
 
 void CG_CheckOrderPending(void) {
-	if (cgs.gametype < GT_CTF) {
+	if (!GametypeIsTeamObjective(cgs.gametype)) {
 		return;
 	}
 	if (cgs.orderPending) {
@@ -785,7 +785,7 @@ static void CG_OneFlagStatus(rectDef_t *rect) {
 static void CG_DrawCTFPowerUp(rectDef_t *rect) {
 	int		value;
 
-	if (cgs.gametype < GT_CTF) {
+	if (!GametypeIsTeamObjective(cgs.gametype)) {
 		return;
 	}
 	value = cg.snap->ps.stats[STAT_PERSISTANT_POWERUP];
@@ -1009,13 +1009,13 @@ qboolean CG_OwnerDrawVisible(int flags) {
 	}
 
 	if (flags & CG_SHOW_ANYTEAMGAME) {
-		if( cgs.gametype >= GT_TEAM) {
+		if(GametypeIsTeam(cgs.gametype)) {
 			return qtrue;
 		}
 	}
 
 	if (flags & CG_SHOW_ANYNONTEAMGAME) {
-		if( cgs.gametype < GT_TEAM) {
+		if(!GametypeIsTeam(cgs.gametype)) {
 			return qtrue;
 		}
 	}
@@ -1130,7 +1130,7 @@ static void CG_DrawKiller(rectDef_t *rect, float scale, vec4_t color, qhandle_t 
 
 
 static void CG_DrawCapFragLimit(rectDef_t *rect, float scale, vec4_t color, qhandle_t shader, int textStyle) {
-	int limit = (cgs.gametype >= GT_CTF) ? cgs.capturelimit : cgs.fraglimit;
+	int limit = (GametypeIsTeamObjective(cgs.gametype)) ? cgs.capturelimit : cgs.fraglimit;
 	CG_Text_Paint(rect->x, rect->y, scale, color, va("%2i", limit),0, 0, textStyle); 
 }
 
@@ -1148,7 +1148,7 @@ static void CG_Draw2ndPlace(rectDef_t *rect, float scale, vec4_t color, qhandle_
 
 const char *CG_GetGameStatusText(void) {
 	const char *s = "";
-	if ( cgs.gametype < GT_TEAM) {
+	if (!GametypeIsTeam(cgs.gametype)) {
 		if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR ) {
 			s = va("%s place with %i",CG_PlaceString( cg.snap->ps.persistant[PERS_RANK] + 1 ),cg.snap->ps.persistant[PERS_SCORE] );
 		}

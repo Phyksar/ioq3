@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *****************************************************************************/
 
 #include "../qcommon/q_shared.h"
+#include "../game/bg_public.h"
 #include "l_utils.h"
 #include "l_libvar.h"
 #include "l_memory.h"
@@ -87,24 +88,6 @@ typedef struct campspot_s
 	float random;
 	struct campspot_s *next;
 } campspot_t;
-
-//FIXME: these are game specific
-typedef enum {
-	GT_FFA,				// free for all
-	GT_TOURNAMENT,		// one on one tournament
-	GT_SINGLE_PLAYER,	// single player tournament
-
-	//-- team games go after this --
-
-	GT_TEAM,			// team deathmatch
-	GT_CTF,				// capture the flag
-#ifdef MISSIONPACK
-	GT_1FCTF,
-	GT_OBELISK,
-	GT_HARVESTER,
-#endif
-	GT_MAX_GAME_TYPE
-} gametype_t;
 
 typedef struct levelitem_s
 {
@@ -879,7 +862,7 @@ int BotGetLevelItemGoal(int index, char *name, bot_goal_t *goal)
 		if (g_gametype == GT_SINGLE_PLAYER) {
 			if (li->flags & IFL_NOTSINGLE) continue;
 		}
-		else if (g_gametype >= GT_TEAM) {
+		else if (GametypeIsTeam(g_gametype)) {
 			if (li->flags & IFL_NOTTEAM) continue;
 		}
 		else {
@@ -1097,7 +1080,7 @@ void BotUpdateEntityItems(void)
 			if (g_gametype == GT_SINGLE_PLAYER) {
 				if (li->flags & IFL_NOTSINGLE) continue;
 			}
-			else if (g_gametype >= GT_TEAM) {
+			else if (GametypeIsTeam(g_gametype)) {
 				if (li->flags & IFL_NOTTEAM) continue;
 			}
 			else {
@@ -1331,7 +1314,7 @@ int BotChooseLTGItem(int goalstate, vec3_t origin, int *inventory, int travelfla
 			if (li->flags & IFL_NOTSINGLE)
 				continue;
 		}
-		else if (g_gametype >= GT_TEAM) {
+		else if (GametypeIsTeam(g_gametype)) {
 			if (li->flags & IFL_NOTTEAM)
 				continue;
 		}
@@ -1502,7 +1485,7 @@ int BotChooseNBGItem(int goalstate, vec3_t origin, int *inventory, int travelfla
 			if (li->flags & IFL_NOTSINGLE)
 				continue;
 		}
-		else if (g_gametype >= GT_TEAM) {
+		else if (GametypeIsTeam(g_gametype)) {
 			if (li->flags & IFL_NOTTEAM)
 				continue;
 		}

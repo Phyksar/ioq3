@@ -1765,7 +1765,9 @@ Q3OBJ = \
   \
   $(B)/client/con_log.o \
   $(B)/client/sys_autoupdater.o \
-  $(B)/client/sys_main.o
+  $(B)/client/sys_main.o \
+  \
+  $(B)/$(BASEGAME)/cgame/bg_misc.o
 
 ifdef MINGW
   Q3OBJ += \
@@ -2301,7 +2303,9 @@ Q3DOBJ = \
   \
   $(B)/ded/con_log.o \
   $(B)/ded/sys_autoupdater.o \
-  $(B)/ded/sys_main.o
+  $(B)/ded/sys_main.o \
+  \
+  $(B)/$(BASEGAME)/cgame/bg_misc.o
 
 ifeq ($(ARCH),x86)
   Q3DOBJ += \

@@ -114,7 +114,7 @@ static __attribute__ ((format (printf, 2, 3))) void QDECL PrintMsg( gentity_t *e
 ==============
 AddTeamScore
 
- used for gametype > GT_TEAM
+ used for ctf-like gametypes
  for gametype GT_TEAM the level.teamScores is updated in AddScore in g_combat.c
 ==============
 */
@@ -167,7 +167,7 @@ qboolean OnSameTeam( gentity_t *ent1, gentity_t *ent2 ) {
 		return qfalse;
 	}
 
-	if ( g_gametype.integer < GT_TEAM ) {
+	if (!GametypeIsTeam(g_gametype.integer)) {
 		return qfalse;
 	}
 
@@ -1383,7 +1383,7 @@ void ObeliskInit( gentity_t *ent ) {
 void SP_team_redobelisk( gentity_t *ent ) {
 	gentity_t *obelisk;
 
-	if ( g_gametype.integer <= GT_TEAM ) {
+	if (!GametypeIsTeamObjective(g_gametype.integer)) {
 		G_FreeEntity(ent);
 		return;
 	}
@@ -1408,7 +1408,7 @@ void SP_team_redobelisk( gentity_t *ent ) {
 void SP_team_blueobelisk( gentity_t *ent ) {
 	gentity_t *obelisk;
 
-	if ( g_gametype.integer <= GT_TEAM ) {
+	if (!GametypeIsTeamObjective(g_gametype.integer)) {
 		G_FreeEntity(ent);
 		return;
 	}

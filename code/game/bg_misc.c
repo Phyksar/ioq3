@@ -1608,3 +1608,34 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	s->loopSound = ps->loopSound;
 	s->generic1 = ps->generic1;
 }
+
+qboolean GametypeIsTeam(gametype_t gametype)
+{
+	switch (gametype) {
+	case GT_TEAM:
+	case GT_CTF:
+	case GT_1FCTF:
+	case GT_OBELISK:
+	case GT_HARVESTER:
+		return qtrue;
+		break;
+	default:
+		return qfalse;
+		break;
+	}
+}
+
+qboolean GametypeIsTeamObjective(gametype_t gametype)
+{
+	switch (gametype) {
+	case GT_CTF:
+	case GT_1FCTF:
+	case GT_OBELISK:
+	case GT_HARVESTER:
+		return qtrue;
+		break;
+	default:
+		return qfalse;
+		break;
+	}
+}

@@ -1063,7 +1063,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame)
 
 	CG_SetScreenPlacement(PLACE_RIGHT, PLACE_TOP);
 
-	if ( cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer == 1 ) {
+	if (GametypeIsTeam(cgs.gametype) && cg_drawTeamOverlay.integer == 1) {
 		y = CG_DrawTeamOverlay( y, qtrue, qtrue );
 	} 
 	if ( cg_drawSnapshot.integer ) {
@@ -1118,7 +1118,7 @@ static float CG_DrawScores( float y ) {
 	y1 = y;
 
 	// draw from the right side to left
-	if ( cgs.gametype >= GT_TEAM ) {
+	if (GametypeIsTeam(cgs.gametype)) {
 		x = 640;
 		color[0] = 0.0f;
 		color[1] = 0.0f;
@@ -1169,7 +1169,7 @@ static float CG_DrawScores( float y ) {
 			}
 		}
 
-		if ( cgs.gametype >= GT_CTF ) {
+		if (GametypeIsTeamObjective(cgs.gametype)) {
 			v = cgs.capturelimit;
 		} else {
 			v = cgs.fraglimit;
@@ -1368,7 +1368,7 @@ static void CG_DrawLowerRight( void ) {
 
 	CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
 
-	if ( cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer == 2 ) {
+	if (GametypeIsTeam(cgs.gametype) && cg_drawTeamOverlay.integer == 2) {
 		y = CG_DrawTeamOverlay( y, qtrue, qfalse );
 	} 
 
@@ -1432,7 +1432,7 @@ static void CG_DrawLowerLeft( void ) {
 
 	CG_SetScreenPlacement(PLACE_LEFT, PLACE_BOTTOM);
 
-	if ( cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer == 3 ) {
+	if (GametypeIsTeam(cgs.gametype) && cg_drawTeamOverlay.integer == 3) {
 		y = CG_DrawTeamOverlay( y, qfalse, qfalse );
 	} 
 
@@ -2204,7 +2204,7 @@ static void CG_DrawSpectator(void) {
 	if ( cgs.gametype == GT_TOURNAMENT ) {
 		CG_DrawBigString(320 - 15 * 8, 460, "waiting to play", 1.0F);
 	}
-	else if ( cgs.gametype >= GT_TEAM ) {
+	else if (GametypeIsTeam(cgs.gametype)) {
 		CG_DrawBigString(320 - 39 * 8, 460, "press ESC and use the JOIN menu to play", 1.0F);
 	}
 }
@@ -2322,7 +2322,7 @@ static qboolean CG_DrawScoreboard( void ) {
 	}
 
 	if (menuScoreboard == NULL) {
-		if ( cgs.gametype >= GT_TEAM ) {
+		if (GametypeIsTeam(cgs.gametype)) {
 			menuScoreboard = Menus_FindByName("teamscore_menu");
 		} else {
 			menuScoreboard = Menus_FindByName("score_menu");
@@ -2719,7 +2719,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame)
 		}
 	}
 
-	if ( cgs.gametype >= GT_TEAM ) {
+	if (GametypeIsTeam(cgs.gametype)) {
 #ifndef MISSIONPACK
 		CG_DrawTeamInfo();
 #endif

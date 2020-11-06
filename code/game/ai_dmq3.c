@@ -1623,7 +1623,7 @@ void BotCheckItemPickup(bot_state_t *bs, int *oldinventory) {
 #ifdef MISSIONPACK
 	int offence, leader;
 
-	if (gametype <= GT_TEAM)
+	if (!GametypeIsTeamObjective(gametype))
 		return;
 
 	offence = -1;
@@ -2186,7 +2186,7 @@ TeamPlayIsOn
 ==================
 */
 int TeamPlayIsOn(void) {
-	return ( gametype >= GT_TEAM );
+	return GametypeIsTeam(gametype);
 }
 
 /*
@@ -2779,7 +2779,7 @@ int BotSameTeam(bot_state_t *bs, int entnum) {
 		return qfalse;
 	}
 
-	if (gametype >= GT_TEAM) {
+	if (GametypeIsTeam(gametype)) {
 		if (level.clients[bs->client].sess.sessionTeam == level.clients[entnum].sess.sessionTeam) return qtrue;
 	}
 

@@ -109,6 +109,9 @@ typedef enum {
 	GT_MAX_GAME_TYPE
 } gametype_t;
 
+qboolean GametypeIsTeam(gametype_t gametype);
+qboolean GametypeIsTeamObjective(gametype_t gametype);
+
 typedef enum { GENDER_MALE, GENDER_FEMALE, GENDER_NEUTER } gender_t;
 
 /*
