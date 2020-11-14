@@ -509,6 +509,11 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	G_RemapTeamShaders();
 
 	trap_SetConfigstring( CS_INTERMISSION, "" );
+
+	// Making a list of offering items in quantity descending order, external logic depends on this!
+	level.offeringItems[0] = BG_FindItem("Extra Large Offering");
+	level.offeringItems[1] = BG_FindItem("Large Offering");
+	level.offeringItems[2] = BG_FindItem("Offering");
 }
 
 

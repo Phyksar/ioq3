@@ -1172,6 +1172,7 @@ void ClientSpawn(gentity_t *ent) {
 	}
 
 	client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
+	client->ps.stats[STAT_OFFERINGS] = 0;
 	client->ps.ammo[WP_GAUNTLET] = -1;
 	client->ps.ammo[WP_GRAPPLING_HOOK] = -1;
 
@@ -1293,7 +1294,9 @@ void ClientDisconnect( int clientNum ) {
 			TossClientCubes( ent );
 		}
 #endif
-
+		if (g_gametype.integer == GT_HEADHUNT) {
+			TossClientOfferings(ent, 0);
+		}
 	}
 
 	G_LogPrintf( "ClientDisconnect: %i\n", clientNum );

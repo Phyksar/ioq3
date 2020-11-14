@@ -407,6 +407,7 @@ typedef struct {
 #ifdef MISSIONPACK
 	int			portalSequence;
 #endif
+	gitem_t     *offeringItems[3];
 } level_locals_t;
 
 
@@ -429,6 +430,7 @@ void StopFollowing( gentity_t *ent );
 void BroadcastTeamChange( gclient_t *client, int oldTeam );
 void SetTeam( gentity_t *ent, const char *s );
 void Cmd_FollowCycle_f( gentity_t *ent, int dir );
+void UpdateCmdScore(gentity_t *ent);
 
 //
 // g_items.c
@@ -498,6 +500,7 @@ void TossClientItems( gentity_t *self );
 void TossClientPersistantPowerups( gentity_t *self );
 #endif
 void TossClientCubes( gentity_t *self );
+void TossClientOfferings(gentity_t *self, int extraOfferings);
 
 // damage flags
 #define DAMAGE_RADIUS				0x00000001	// damage was indirect

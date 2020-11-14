@@ -126,6 +126,23 @@ void TossClientItems( gentity_t *self ) {
 	}
 }
 
+void TossClientOfferings(gentity_t *self, int extraOfferings)
+{
+	int	i, j;
+	int	offeringsNumber;
+	int	totalOfferings;
+
+	totalOfferings = self->client->ps.stats[STAT_OFFERINGS] + extraOfferings;
+	self->client->ps.stats[STAT_OFFERINGS] = 0;
+	for (i = 0; i < ARRAY_LEN(level.offeringItems); i++) {
+		offeringsNumber = totalOfferings / level.offeringItems[i]->quantity;
+		totalOfferings -= offeringsNumber * level.offeringItems[i]->quantity;
+		for (j = 0; j < offeringsNumber; j++) {
+			Drop_Item(self, level.offeringItems[i], random() * 360);
+		}
+	}
+}
+
 #ifdef MISSIONPACK
 
 /*
@@ -426,6 +443,30 @@ void CheckAlmostScored( gentity_t *self, gentity_t *attacker ) {
 	}
 }
 
+void UpdateCmdScore(gentity_t *ent)
+{
+	int i;
+
+	// show scores
+	Cmd_Score_f(ent);
+	// send updated scores to any clients that are following this one,
+	// or they would get stale scoreboards
+	for (i = 0; i < level.maxclients; i++) {
+		gclient_t	*client;
+
+		client = &level.clients[i];
+		if (client->pers.connected != CON_CONNECTED) {
+			continue;
+		}
+		if (client->sess.sessionTeam != TEAM_SPECTATOR) {
+			continue;
+		}
+		if (client->sess.spectatorClient == ent->s.number) {
+			Cmd_Score_f(g_entities + i);
+		}
+	}
+}
+
 /*
 ==================
 player_die
@@ -436,7 +477,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	int			anim;
 	int			contents;
 	int			killer;
-	int			i;
 	char		*killerName, *obit;
 
 	if ( self->client->ps.pm_type == PM_DEAD ) {
@@ -508,7 +548,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		if ( attacker == self || OnSameTeam (self, attacker ) ) {
 			AddScore( attacker, self->r.currentOrigin, -1 );
 		} else {
-			AddScore( attacker, self->r.currentOrigin, 1 );
+			if (g_gametype.integer != GT_HEADHUNT) {
+				AddScore(attacker, self->r.currentOrigin, 1);
+			}
 
 			if( meansOfDeath == MOD_GAUNTLET ) {
 				
@@ -568,24 +610,11 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		TossClientCubes( self );
 	}
 #endif
-
-	Cmd_Score_f( self );		// show scores
-	// send updated scores to any clients that are following this one,
-	// or they would get stale scoreboards
-	for ( i = 0 ; i < level.maxclients ; i++ ) {
-		gclient_t	*client;
-
-		client = &level.clients[i];
-		if ( client->pers.connected != CON_CONNECTED ) {
-			continue;
-		}
-		if ( client->sess.sessionTeam != TEAM_SPECTATOR ) {
-			continue;
-		}
-		if ( client->sess.spectatorClient == self->s.number ) {
-			Cmd_Score_f( g_entities + i );
-		}
+	if (g_gametype.integer == GT_HEADHUNT) {
+		TossClientOfferings(self, attacker && attacker->client && attacker != self && !OnSameTeam(self, attacker));
 	}
+
+	UpdateCmdScore(self);
 
 	self->takedamage = qtrue;	// can still be gibbed
 

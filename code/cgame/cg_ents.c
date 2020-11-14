@@ -346,6 +346,39 @@ static void CG_Item( centity_t *cent ) {
 	}
 #endif
 
+	if (item->giType == IT_OFFERING) {
+		if (item->giTag == HI_EXTRA_LARGE_OFFERING) {
+			ent.hModel = cgs.media.offeringModel;
+			ent.customSkin = cgs.media.offeringExtraLargeSkin;
+			ent.shaderRGBA[0] = 0xff;
+			ent.shaderRGBA[1] = 0x18;
+			ent.shaderRGBA[2] = 0x18;
+			ent.shaderRGBA[3] = 0xff;
+			VectorScale(ent.axis[0], 1.5f, ent.axis[0]);
+			VectorScale(ent.axis[1], 1.5f, ent.axis[1]);
+			VectorScale(ent.axis[2], 1.5f, ent.axis[2]);
+			ent.nonNormalizedAxes = qtrue;
+		} else if (item->giTag == HI_LARGE_OFFERING) {
+			ent.hModel = cgs.media.offeringModel;
+			ent.customSkin = cgs.media.offeringLargeSkin;
+			ent.shaderRGBA[0] = 0xff;
+			ent.shaderRGBA[1] = 0x9a;
+			ent.shaderRGBA[2] = 0x27;
+			ent.shaderRGBA[3] = 0xff;
+			VectorScale(ent.axis[0], 1.25f, ent.axis[0]);
+			VectorScale(ent.axis[1], 1.25f, ent.axis[1]);
+			VectorScale(ent.axis[2], 1.25f, ent.axis[2]);
+			ent.nonNormalizedAxes = qtrue;
+		} else {
+			ent.hModel = cgs.media.offeringModel;
+			ent.customSkin = 0;
+			ent.shaderRGBA[0] = 0xff;
+			ent.shaderRGBA[1] = 0xff;
+			ent.shaderRGBA[2] = 0xff;
+			ent.shaderRGBA[3] = 0xff;
+		}
+	}
+
 	// add to refresh list
 	trap_R_AddRefEntityToScene(&ent);
 

@@ -916,6 +916,60 @@ Only in One Flag CTF games
 	},
 #endif
 
+	{
+		"item_offering", 
+		"sound/misc/offering_pickup.wav",
+        {
+			"models/misc/offering.md3",
+			NULL,
+			NULL,
+			NULL
+		},
+		"icons/offering",
+		"Offering",
+		1,
+		IT_OFFERING,
+		HI_OFFERING,
+		"",
+		""
+	},
+
+	{
+		"item_offering_large", 
+		"sound/misc/offering_large_pickup.wav",
+        {
+			"models/misc/offering.md3",
+			NULL,
+			NULL,
+			NULL
+		},
+		"icons/offering_large",
+		"Large Offering",
+		5,
+		IT_OFFERING,
+		HI_LARGE_OFFERING,
+		"",
+		""
+	},
+
+	{
+		"item_offering_extra_large", 
+		"sound/misc/offering_extralarge_pickup.wav",
+        {
+			"models/misc/offering.md3",
+			NULL,
+			NULL,
+			NULL
+		},
+		"icons/offering_extralarge",
+		"Extra Large Offering",
+		25,
+		IT_OFFERING,
+		HI_EXTRA_LARGE_OFFERING,
+		"",
+		""
+	},
+
 	// end of list marker
 	{NULL}
 };
@@ -1181,6 +1235,9 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 #endif
 #endif
          break;
+
+	case IT_OFFERING:
+		return qtrue;
 	}
 
 	return qfalse;

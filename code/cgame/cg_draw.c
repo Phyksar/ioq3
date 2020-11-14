@@ -1352,6 +1352,49 @@ static float CG_DrawPowerups( float y ) {
 
 	return y;
 }
+
+static float CG_DrawOfferings(float y)
+{
+	int				x;
+	float			size;
+	playerState_t	*ps;
+	qhandle_t		icon;
+	float			color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	const int chars = 3;
+	ps = &cg.snap->ps;
+	x = 640 - ICON_SIZE - CHAR_WIDTH * chars;
+
+	if (ps->stats[STAT_HEALTH] <= 0) {
+		return y;
+	}
+
+	if (ps->stats[STAT_OFFERINGS] > 0) {
+		if (ps->stats[STAT_OFFERINGS] >= cgs.media.offeringExtraLargeItem->quantity) {
+			icon = cgs.media.offeringExtraLargeIconShader;
+			color[0] = 1.0f;
+			color[1] = 0.1f;
+			color[2] = 0.1f;
+		} else if (ps->stats[STAT_OFFERINGS] >= cgs.media.offeringLargeItem->quantity) {
+			icon = cgs.media.offeringLargeIconShader;
+			color[0] = 1.0f;
+			color[1] = 0.6f;
+			color[2] = 0.1f;
+		} else {
+			icon = cgs.media.offeringIconShader;
+		}
+
+		y -= ICON_SIZE;
+		size = ICON_SIZE * 0.75;
+
+		trap_R_SetColor(color);
+		CG_DrawField(x, y, chars, ps->stats[STAT_OFFERINGS]);
+		trap_R_SetColor(NULL);
+		CG_DrawPic(640 - (ICON_SIZE + size) / 2, y + 4 + (ICON_SIZE - size) / 2, size, size, icon);
+	}
+
+	return y;
+}
 #endif // MISSIONPACK
 
 /*
@@ -1373,6 +1416,7 @@ static void CG_DrawLowerRight( void ) {
 	} 
 
 	y = CG_DrawScores( y );
+	y = CG_DrawOfferings(y);
 	CG_DrawPowerups( y );
 }
 #endif // MISSIONPACK

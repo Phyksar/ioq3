@@ -690,6 +690,16 @@ typedef struct {
 	qhandle_t	harvesterNeutralModel;
 #endif
 
+	qhandle_t	offeringModel;
+	qhandle_t	offeringSkin;
+	qhandle_t	offeringLargeSkin;
+	qhandle_t	offeringExtraLargeSkin;
+	qhandle_t	offeringIconShader;
+	qhandle_t	offeringLargeIconShader;
+	qhandle_t	offeringExtraLargeIconShader;
+	gitem_t		*offeringLargeItem;
+	gitem_t		*offeringExtraLargeItem;
+
 	qhandle_t	armorModel;
 	qhandle_t	armorIcon;
 

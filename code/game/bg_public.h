@@ -218,9 +218,11 @@ typedef enum {
 	STAT_ARMOR,				
 	STAT_DEAD_YAW,					// look this direction when dead (FIXME: get rid of?)
 	STAT_CLIENTS_READY,				// bit mask of clients wishing to exit the intermission (FIXME: configstring?)
-	STAT_MAX_HEALTH					// health / armor limit, changeable by handicap
+	STAT_MAX_HEALTH,				// health / armor limit, changeable by handicap
+	STAT_OFFERINGS
 } statIndex_t;
 
+#define MAX_STAT_OFFERINGS 200
 
 // player_state->persistant[] indexes
 // these fields are the only part of player_state that isn't
@@ -304,6 +306,9 @@ typedef enum {
 	HI_KAMIKAZE,
 	HI_PORTAL,
 	HI_INVULNERABILITY,
+	HI_OFFERING,
+	HI_LARGE_OFFERING,
+	HI_EXTRA_LARGE_OFFERING,
 
 	HI_NUM_HOLDABLE
 } holdable_t;
@@ -626,7 +631,8 @@ typedef enum {
 	IT_HOLDABLE,			// single use, holdable item
 							// EFX: rotate + bob
 	IT_PERSISTANT_POWERUP,
-	IT_TEAM
+	IT_TEAM,
+	IT_OFFERING
 } itemType_t;
 
 #define MAX_ITEM_MODELS 4

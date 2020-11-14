@@ -959,6 +959,18 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.dustPuffShader = trap_R_RegisterShader("hasteSmokePuff" );
 #endif
 
+	if (cgs.gametype == GT_HEADHUNT || cg_buildScript.integer) {
+		cgs.media.offeringModel = trap_R_RegisterModel("models/misc/offering.md3");
+		cgs.media.offeringSkin = trap_R_RegisterSkin("models/misc/offering.skin");
+		cgs.media.offeringLargeSkin = trap_R_RegisterSkin("models/misc/offering_large.skin");
+		cgs.media.offeringExtraLargeSkin = trap_R_RegisterSkin("models/misc/offering_extralarge.skin");
+		cgs.media.offeringIconShader = trap_R_RegisterShaderNoMip("icons/small/offering");
+		cgs.media.offeringLargeIconShader = trap_R_RegisterShaderNoMip("icons/small/offering_large");
+		cgs.media.offeringExtraLargeIconShader = trap_R_RegisterShaderNoMip("icons/small/offering_extralarge");
+		cgs.media.offeringLargeItem = BG_FindItem("Large Offering");
+		cgs.media.offeringExtraLargeItem = BG_FindItem("Extra Large Offering");
+	}
+
 	if (GametypeIsTeam(cgs.gametype) || cg_buildScript.integer) {
 		cgs.media.friendShader = trap_R_RegisterShader( "sprites/foe" );
 		cgs.media.redQuadShader = trap_R_RegisterShader("powerups/blueflag" );

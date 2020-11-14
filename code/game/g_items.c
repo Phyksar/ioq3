@@ -314,6 +314,17 @@ int Pickup_Health (gentity_t *ent, gentity_t *other) {
 
 //======================================================================
 
+void AddArmorStat(gentity_t *player, int quantity)
+{
+	int upperBound;
+
+	upperBound = player->client->ps.stats[STAT_MAX_HEALTH] * 2;
+	player->client->ps.stats[STAT_ARMOR] += quantity;
+	if (player->client->ps.stats[STAT_ARMOR] > upperBound) {
+		player->client->ps.stats[STAT_ARMOR] = upperBound;
+	}
+}
+
 int Pickup_Armor( gentity_t *ent, gentity_t *other ) {
 #ifdef MISSIONPACK
 	int		upperBound;
@@ -331,13 +342,29 @@ int Pickup_Armor( gentity_t *ent, gentity_t *other ) {
 		other->client->ps.stats[STAT_ARMOR] = upperBound;
 	}
 #else
-	other->client->ps.stats[STAT_ARMOR] += ent->item->quantity;
-	if ( other->client->ps.stats[STAT_ARMOR] > other->client->ps.stats[STAT_MAX_HEALTH] * 2 ) {
-		other->client->ps.stats[STAT_ARMOR] = other->client->ps.stats[STAT_MAX_HEALTH] * 2;
-	}
+	AddArmorStat(other, ent->item->quantity);
 #endif
 
 	return RESPAWN_ARMOR;
+}
+
+//======================================================================
+
+int Pickup_Offering(gentity_t *ent, gentity_t *other) {
+	int oldStatOfferings;
+	int armorBonus;
+
+	oldStatOfferings = other->client->ps.stats[STAT_OFFERINGS];
+	other->client->ps.stats[STAT_OFFERINGS] += ent->item->quantity;
+	if (other->client->ps.stats[STAT_OFFERINGS] > MAX_STAT_OFFERINGS) {
+		other->client->ps.stats[STAT_OFFERINGS] = MAX_STAT_OFFERINGS;
+	}
+	armorBonus = 20 * (other->client->ps.stats[STAT_OFFERINGS] / 5 - oldStatOfferings / 5);
+	if (armorBonus > 0) {
+		AddArmorStat(other, armorBonus);
+	}
+
+	return -1;
 }
 
 //======================================================================
@@ -471,6 +498,9 @@ void Touch_Item (gentity_t *ent, gentity_t *other, trace_t *trace) {
 		break;
 	case IT_HOLDABLE:
 		respawn = Pickup_Holdable(ent, other);
+		break;
+	case IT_OFFERING:
+		respawn = Pickup_Offering(ent, other);
 		break;
 	default:
 		return;
@@ -811,6 +841,11 @@ void ClearRegisteredItems( void ) {
 	// players always start with the base weapon
 	RegisterItem( BG_FindItemForWeapon( WP_MACHINEGUN ) );
 	RegisterItem( BG_FindItemForWeapon( WP_GAUNTLET ) );
+	if (g_gametype.integer == GT_HEADHUNT) {
+		RegisterItem(BG_FindItem("Offering"));
+		RegisterItem(BG_FindItem("Large Offering"));
+		RegisterItem(BG_FindItem("Extra Large Offering"));
+	}
 #ifdef MISSIONPACK
 	if( g_gametype.integer == GT_HARVESTER ) {
 		RegisterItem( BG_FindItem( "Red Cube" ) );
