@@ -232,6 +232,7 @@ static void CG_Item( centity_t *cent ) {
 	float			frac;
 	float			scale;
 	weaponInfo_t	*wi;
+	vec3_t			angles;
 
 	es = &cent->currentState;
 	if ( es->modelindex >= bg_numItems ) {
@@ -268,6 +269,12 @@ static void CG_Item( centity_t *cent ) {
 	if ( item->giType == IT_HEALTH ) {
 		VectorCopy( cg.autoAnglesFast, cent->lerpAngles );
 		AxisCopy( cg.autoAxisFast, ent.axis );
+	// rotate each entity to different angles
+	} else if (item->giType == IT_OFFERING) {
+		angles[0] = 0;
+		angles[1] = ((cg.time + es->number * 376) & 2047) * 360 / 2048.0;
+		angles[2] = 0;
+		AnglesToAxis(angles, ent.axis);
 	} else {
 		VectorCopy( cg.autoAngles, cent->lerpAngles );
 		AxisCopy( cg.autoAxis, ent.axis );
