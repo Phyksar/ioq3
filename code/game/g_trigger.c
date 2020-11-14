@@ -401,6 +401,57 @@ void SP_trigger_hurt( gentity_t *self ) {
 	}
 }
 
+/*
+==============================================================================
+
+trigger_offering_gate
+
+==============================================================================
+*/
+
+void trigger_goal_touch(gentity_t *self, gentity_t *other, trace_t *trace)
+{
+	vec3_t	origin, angles;
+
+	if (!other->client) {
+		return;
+	}
+	if (other->client->ps.pm_type == PM_DEAD) {
+		return;
+	}
+	if ((self->spawnflags & 1) && other->client->sess.sessionTeam != TEAM_SPECTATOR) {
+		return;
+	}
+
+	// teleport player only if he has something to offer, otherway let him fly
+	if (other->client->ps.stats[STAT_OFFERINGS] > 0) {
+		AddScore(other, other->client->ps.origin, other->client->ps.stats[STAT_OFFERINGS]);
+		UpdateCmdScore(other);
+		other->client->ps.stats[STAT_OFFERINGS] = 0;
+
+		SelectSpawnPoint(other->client->ps.origin, origin, angles, qfalse);
+		TeleportPlayer(other, origin, angles);
+	}
+}
+
+void SP_trigger_goal(gentity_t *self)
+{
+	InitTrigger(self);
+
+	if (self->spawnflags & 1) {
+		self->r.svFlags |= SVF_NOCLIENT;
+	} else {
+		self->r.svFlags &= ~SVF_NOCLIENT;
+	}
+
+	G_SoundIndex("sound/world/jumppad.wav");
+
+	self->s.eType = ET_GOAL_TRIGGER;
+	self->touch = trigger_goal_touch;
+
+	trap_LinkEntity(self);
+}
+
 
 /*
 ==============================================================================

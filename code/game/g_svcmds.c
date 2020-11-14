@@ -363,6 +363,9 @@ void	Svcmd_EntityList_f (void) {
 		case ET_GRAPPLE:
 			G_Printf("ET_GRAPPLE          ");
 			break;
+		case ET_GOAL_TRIGGER:
+			G_Printf("ET_GOAL_TRIGGER     ");
+			break;
 		default:
 			G_Printf("%3i                 ", check->s.eType);
 			break;
