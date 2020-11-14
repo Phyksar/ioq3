@@ -1181,6 +1181,8 @@ const char *CG_GameTypeString(void) {
 		return "Overload";
 	} else if ( cgs.gametype == GT_HARVESTER ) {
 		return "Harvester";
+	} else if (cgs.gametype == GT_HEADHUNT) {
+		return "Headhunt";
 	}
 	return "";
 }

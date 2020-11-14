@@ -261,6 +261,9 @@ void CG_DrawInformation( void ) {
 		s = "Harvester";
 		break;
 #endif
+	case GT_HEADHUNT:
+		s = "Headhunt";
+		break;
 	default:
 		s = "Unknown Gametype";
 		break;

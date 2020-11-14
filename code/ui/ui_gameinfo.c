@@ -208,6 +208,9 @@ void UI_LoadArenasIntoMapList( void ) {
 			if( strstr( type, "harvester" ) ) {
 				uiInfo.mapList[uiInfo.mapCount].typeBits |= (1 << GT_HARVESTER);
 			}
+			if (strstr(type, "headhunt")) {
+				uiInfo.mapList[uiInfo.mapCount].typeBits |= (1 << GT_HEADHUNT);
+			}
 		} else {
 			uiInfo.mapList[uiInfo.mapCount].typeBits |= (1 << GT_FFA);
 		}

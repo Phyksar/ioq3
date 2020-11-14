@@ -2548,6 +2548,8 @@ static void CG_DrawWarmup( void ) {
 		} else if ( cgs.gametype == GT_HARVESTER ) {
 			s = "Harvester";
 #endif
+		} else if (cgs.gametype == GT_HEADHUNT) {
+			s = "Headhunt";
 		} else {
 			s = "";
 		}

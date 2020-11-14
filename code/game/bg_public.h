@@ -106,6 +106,11 @@ typedef enum {
 	GT_1FCTF,
 	GT_OBELISK,
 	GT_HARVESTER,
+
+	//-- custom games go there --
+
+	GT_HEADHUNT,
+
 	GT_MAX_GAME_TYPE
 } gametype_t;
 
